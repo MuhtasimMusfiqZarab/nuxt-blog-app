@@ -4,7 +4,7 @@
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 $ npm run install
 
@@ -20,3 +20,13 @@ $ npm run generate
 ```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+problems faced:
+
+- not toggling while chicked
+- default is not needed why ?
+- structure of double quote used inside attributes
+- component is auto default exported? (why we are default inporting without exporting defaultly)
+- using javascript assignments inside of double quotes
+  -naming of the default index.vue convention
+  -router.push navigates to an absolute path?
