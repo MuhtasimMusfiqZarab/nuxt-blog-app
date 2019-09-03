@@ -1,0 +1,17 @@
+{
+  "name": "nuxt-blog-app",
+  "version": "1.0.0",
+  "description": "This is a Nuxt blog application",
+  "author": "Muhtasim Musfiq Zarab",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "nuxt": "^2.0.0"
+  },
+  "devDependencies": {}
+}
