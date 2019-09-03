@@ -3,36 +3,16 @@
     <section class="intro">
       <h1>Get the latest tech news</h1>
     </section>
-    <section class="featured-posts">
-      <!-- showing all featured posts here        -->
-      <PostPreview
-        id="1"
-        thumbnail="https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-        title="Hello there!!"
-        previewText="This is my first post!!"
-      />
-      <PostPreview
-        id="2"
-        thumbnail="https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-        title="SOmething is up!!"
-        previewText="This is my first post!!"
-      />
-      <PostPreview
-        id="3"
-        thumbnail="https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-        title="Some News here !!"
-        previewText="This is my first post!!"
-      />
-    </section>
+    <PostList />
   </div>
 </template>
 
 <script>
-import PostPreview from "@/components/Posts/PostPreview";
+import PostList from "@/components/Posts/PostList";
 
 export default {
   components: {
-    PostPreview
+    PostList
   }
 };
 </script>
