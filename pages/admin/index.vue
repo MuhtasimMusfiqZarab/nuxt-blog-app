@@ -6,7 +6,8 @@
     </section>
     <section class="existing-posts">
       <h1>Existing Posts</h1>
-      <PostList />
+      <!-- passing idAdmin like this makes is true -->
+      <PostList isAdmin />
     </section>
   </div>
 </template>

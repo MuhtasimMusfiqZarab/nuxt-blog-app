@@ -4,8 +4,8 @@
   <!-- Reusing components to show post preview for individual post -->
   <!-- to is a dynamic link -->
   <!--image url https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260 -->
-
-  <nuxt-link :to="'/posts/' + id" class="post-preview">
+  <!-- postLink returns a link according to admin or not -->
+  <nuxt-link :to="postLink" class="post-preview">
     <article>
       <div class="post-thumbnail" :style="{backgroundImage: 'url(' + thumbnail + ')'}"></div>
       <div class="post-content">
@@ -26,6 +26,11 @@ export default {
       type: String,
       required: true
     },
+    // it is necessary for updating a post
+    isAdmin: {
+      type: Boolean,
+      required: true
+    },
     title: {
       type: String,
       required: true
@@ -37,6 +42,13 @@ export default {
     thumbnail: {
       type: String,
       required: true
+    }
+  },
+  // calculating the navigation link using computed property
+  computed: {
+    // this returns the link we want to go to
+    postLink() {
+      return this.isAdmin ? "/admin/" + this.id : "/posts/" + this.id;
     }
   }
 };
