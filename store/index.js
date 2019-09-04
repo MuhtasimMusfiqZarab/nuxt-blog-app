@@ -16,6 +16,10 @@ const createStore = () => {
       //payload is always context
       //general data has been fetched only one time and added to the store
       nuxtServerInit({ commit }, context) {
+        // if (!process.client) {
+        //   // console.log(context.req);
+        // }
+
         // must need to return if executing async action (else we dont need to return)
         return new Promise((resolve, reject) => {
           setTimeout(() => {

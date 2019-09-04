@@ -53,7 +53,8 @@ export default {
   methods: {
     //saving the post here
     onSave() {
-      console.log(this.editedPost);
+      // console.log(this.editedPost);
+      this.$emit("submit", this.editedPost); //emiting submit event to all parent with form data
     },
     onCancel() {
       // navigate back
