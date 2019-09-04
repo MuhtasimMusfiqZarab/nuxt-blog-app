@@ -1,12 +1,12 @@
 <template>
   <div class="single-post-page">
     <section class="post">
-      <h1 class="post-title">This is a single page post</h1>
+      <h1 class="post-title">{{loadedPost.title}}</h1>
       <div class="post-details">
-        <div class="post-detail">Last updated on xxx</div>
-        <div class="post-detail">Written by xxx</div>
+        <div class="post-detail">{{loadedPost.updatedDate}}</div>
+        <div class="post-detail">{{loadedPost.author}}</div>
       </div>
-      <div class="post-content">Contennt of the post</div>
+      <div class="post-content">{{loadedPost.content}}</div>
     </section>
     <section class="post-feedback">
       <p>
@@ -18,6 +18,32 @@
     </section>
   </div>
 </template>
+
+
+
+<script>
+export default {
+  // inside of async ==> we get this.$route.params(params object holds all route parameters) by using context.params (or context.route.params)
+  // we also know that this keyword can't be used here
+
+  asyncData(context, callback) {
+    setTimeout(() => {
+      callback(null, {
+        loadedPost: {
+          id: "1",
+          title: " First Post (id " + context.params.id + ")",
+          previewText: "This is the first post",
+          author: "Muhtasim Musfiq",
+          updatedDate: new Date(),
+          content: "Dummy text, not the preview text",
+          thumbnail:
+            "https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+        }
+      });
+    }, 1000);
+  }
+};
+</script>
 
 <style scoped>
 .single-post-page {
