@@ -25,8 +25,17 @@
 export default {
   // inside of async ==> we get this.$route.params(params object holds all route parameters) by using context.params (or context.route.params)
   // we also know that this keyword can't be used here
+  // for individual data we still always perform async because it might need some extra data
+  // we can only use asyncData() inside of a paged component
+  //async data will be executed on the server wehn we load it the first time or on client on subsiquent navigation & action
+  // this is powerfull for page specific data
+
+  //---------fetch vs asyncData
+  //* async merge the data in data property, fetch stores the data on the store (using commit inside it)
+  // better option than fetch is to use nuxtServerInit()
 
   asyncData(context, callback) {
+    //data must wait till it finish loading on the server before it is send to client (thus must use callback or promise)
     setTimeout(() => {
       callback(null, {
         loadedPost: {
