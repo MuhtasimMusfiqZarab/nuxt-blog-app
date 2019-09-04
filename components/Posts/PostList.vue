@@ -2,27 +2,18 @@
   <!-- This is reused inside homepage and blogs page -->
   <div>
     <section class="post-lists">
+      <!-- looping through individual post -->
       <!-- showing all featured posts here        -->
+      <!-- key must be binded if we use v-for (efficient manage our list) -->
+      <!-- binding :id is important for routing -->
       <PostPreview
-        id="1"
+        :id="post.id"
+        v-for="post in posts"
+        :key="post.id"
         :is-admin="isAdmin"
-        thumbnail="https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-        title="Hello there!!"
-        previewText="This is my first post!!"
-      />
-      <PostPreview
-        id="2"
-        :is-admin="isAdmin"
-        thumbnail="https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-        title="SOmething is up!!"
-        previewText="This is my first post!!"
-      />
-      <PostPreview
-        id="3"
-        :is-admin="isAdmin"
-        thumbnail="https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-        title="Some News here !!"
-        previewText="This is my first post!!"
+        :thumbnail="post.thumbnail"
+        :title="post.title"
+        :previewText="post.previewText"
       />
     </section>
   </div>
@@ -41,6 +32,10 @@ export default {
     isAdmin: {
       type: Boolean,
       default: false
+    },
+    posts: {
+      type: Array,
+      required: true
     }
   }
 };
