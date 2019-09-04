@@ -57,6 +57,12 @@ export default {
         return data;
       })
       .catch(e => console.log(new Error()));
+  },
+
+  //loading async data to the store
+  created() {
+    this.$store.dispatch("setPosts", this.loadedPosts);
+    console.log(this.$store.getters.loadedPosts);
   }
 };
 </script>
