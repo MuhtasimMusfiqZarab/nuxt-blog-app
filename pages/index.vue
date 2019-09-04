@@ -18,8 +18,7 @@ export default {
   // server waits for it to finish and then return it to the client (hence we will get a pre-rendered complete page back to the client)
   // this also replaces the data() as well as created() in the client side (this executes on the server)
   // we cant use normal data then which will override the asyncData & can get unwanted effect
-  asyncData(context, callback) {
-    console.log("async data is loaded");
+  asyncData(context) {
     // this keyword does not work as expected in async data coz async data runs before this component is created
     // we need to give asyncData the idea about when we are done (otherwise imediately returns the finished page
     // one solution is to return a promise ( thus it waits for the promise to be resolved and gives the result)
@@ -27,33 +26,44 @@ export default {
     // other one is to use callback (in aync data we get two arguments (context, callback)), execute callback when we are done
     // execution of callback method tells the async method that we are done
     // we use callback instead of return
-    setTimeout(() => {
-      callback(null, {
-        loadedPosts: [
-          {
-            id: "1",
-            title: " First Post",
-            previewText: "This is the first post",
-            thumbnail:
-              "https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-          },
-          {
-            id: "2",
-            title: " Second Post",
-            previewText: "This is the second post",
-            thumbnail:
-              "https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-          },
-          {
-            id: "3",
-            title: " Third Post",
-            previewText: "This is the third post",
-            thumbnail:
-              "https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-          }
-        ]
-      });
-    }, 1500);
+    return new Promise(resolve => {
+      setTimeout(() => {
+        //if first arg is not null then it returns error autometically
+        resolve({
+          loadedPosts: [
+            {
+              id: "1",
+              title: " First Post",
+              previewText: "This is the first post",
+              thumbnail:
+                "https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+            },
+            {
+              id: "2",
+              title: " Second Post",
+              previewText: "This is the second post",
+              thumbnail:
+                "https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+            },
+            {
+              id: "3",
+              title: " Third Post",
+              previewText: "This is the third post",
+              thumbnail:
+                "https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+            }
+          ]
+        });
+      }, 1500);
+      //once resolved then marge data with other component data (inside then)==>(map the data as needed using new obj or return the object as a whole)
+      // catching errors inside of promise
+      // then handles resolve , catch handles reject
+    })
+      .then(data => {
+        console.log(data);
+        return data;
+      })
+      .catch(e => console.log(new Error()));
   }
 };
 </script>
