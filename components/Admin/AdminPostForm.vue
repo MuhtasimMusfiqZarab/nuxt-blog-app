@@ -41,9 +41,9 @@ export default {
       //returning an object based on the existing one (if any post is send as a prop as a default value)
       // checking if the form is provided with a prop data, then use that value inside the form
       editedPost: this.post
-        ? { ...this.post }
+        ? { ...this.post } && console.log(this.post)
         : {
-            author: "",
+            author: "Hi",
             title: "",
             thumbnail: "",
             content: "",

@@ -7,7 +7,7 @@
     <section class="existing-posts">
       <h1>Existing Posts</h1>
       <!-- passing idAdmin like this makes is true -->
-      <PostList isAdmin />
+      <PostList isAdmin :posts="loadedPosts" />
     </section>
   </div>
 </template>
@@ -20,6 +20,12 @@ export default {
   components: {
     PostList,
     AppButton
+  },
+  computed: {
+    //getting prefetched data from vuex
+    loadedPosts() {
+      return this.$store.getters.loadedPosts;
+    }
   }
 };
 </script>

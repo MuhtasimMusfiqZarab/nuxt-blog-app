@@ -28,6 +28,7 @@ export default {
     //callback is not needed as we are using promise
     return axios
       .get(
+        //context.params.id because the folder is named _id
         "https://nuxt-blog-e3c31.firebaseio.com/post/" +
           context.params.id +
           ".json"
