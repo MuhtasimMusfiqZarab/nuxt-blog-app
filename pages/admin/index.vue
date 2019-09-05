@@ -7,7 +7,7 @@
     <section class="existing-posts">
       <h1>Existing Posts</h1>
       <!-- passing idAdmin like this makes is true -->
-      <PostList isAdmin :posts="loadedPosts" />
+      <PostList :posts="loadedPosts" isAdmin />
     </section>
   </div>
 </template>

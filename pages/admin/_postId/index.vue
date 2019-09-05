@@ -5,7 +5,7 @@
       <!-- load post into the form which can be edited -->
       <!-- AdminPostForm is accepting value from the fetched data  -->
       <!-- this component emiting submit event (contains post entered by the user==> editedPost) -->
-      <AdminPostForm :post="loadedPosts" @submit="onSubmitted" />
+      <AdminPostForm :post="loadedPost" @submit="onSubmitted" />
     </section>
   </div>
 </template>

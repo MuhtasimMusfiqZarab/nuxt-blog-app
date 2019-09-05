@@ -25,6 +25,7 @@ import AppControlInput from "@/components/UI/AppControlInput";
 import AppButton from "@/components/UI/AppButton";
 
 export default {
+  name: "AdminPostForm",
   components: {
     AppControlInput,
     AppButton
@@ -40,15 +41,16 @@ export default {
     return {
       //returning an object based on the existing one (if any post is send as a prop as a default value)
       // checking if the form is provided with a prop data, then use that value inside the form
-      editedPost: this.post
-        ? { ...this.post } && console.log(this.post)
-        : {
-            author: "Hi",
-            title: "",
-            thumbnail: "",
-            content: "",
-            previewText: ""
-          }
+      editedPost:
+        this.post !== null
+          ? { ...this.post }
+          : {
+              author: "Hi",
+              title: "",
+              thumbnail: "",
+              content: "",
+              previewText: ""
+            }
     };
   },
 
