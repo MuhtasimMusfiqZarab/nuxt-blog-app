@@ -14,6 +14,7 @@
 // The component we use only once should have a The at the begining
 import TheHeader from "@/components/Navigation/TheHeader";
 import TheSidenav from "@/components/Navigation/TheSidenav";
+
 export default {
   components: {
     TheHeader,

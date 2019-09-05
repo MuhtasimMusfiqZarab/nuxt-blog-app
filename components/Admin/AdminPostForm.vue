@@ -8,9 +8,10 @@
 
     <AppControlInput v-model="editedPost.title">Title</AppControlInput>
 
-    <AppControlInput v-model="editedPost.thumbnailLink">Thumbnail Link</AppControlInput>
+    <AppControlInput v-model="editedPost.thumbnail">Thumbnail Link</AppControlInput>
 
     <AppControlInput control-type="textarea" v-model="editedPost.content">Content</AppControlInput>
+    <AppControlInput control-type="textarea" v-model="editedPost.previewText">Prewview Text</AppControlInput>
 
     <AppButton type="submit">Save</AppButton>
 
@@ -44,8 +45,9 @@ export default {
         : {
             author: "",
             title: "",
-            thumbnailLink: "",
-            content: ""
+            thumbnail: "",
+            content: "",
+            previewText: ""
           }
     };
   },
@@ -55,6 +57,7 @@ export default {
     onSave() {
       // console.log(this.editedPost);
       this.$emit("submit", this.editedPost); //emiting submit event to all parent with form data
+      // this.$router.push("/admin");
     },
     onCancel() {
       // navigate back

@@ -19,7 +19,7 @@ const createStore = () => {
       nuxtServerInit({ commit }, context) {
         //must return as using async request
         return axios
-          .get("https://nuxt-blog-e3c31.firebaseio.com/post")
+          .get("https://nuxt-blog-e3c31.firebaseio.com/post.json")
           .then(res => {
             //transform data object into array before storing (here objects are named with a key)
             const postArray = []; //initialize array
