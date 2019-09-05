@@ -34,6 +34,10 @@ export default {
   //* async merge the data in data property, fetch stores the data on the store (using commit inside it)
   // better option than fetch is to use nuxtServerInit()
 
+  // ----------------This one uses promise (example code)
+  // code can be found here: https://codesandbox.io/s/kind-dubinsky-y57g1
+
+  //--------------Later version----------------------
   asyncData(context, callback) {
     //data must wait till it finish loading on the server before it is send to client (thus must use callback or promise)
     setTimeout(() => {

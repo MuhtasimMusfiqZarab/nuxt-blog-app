@@ -1,5 +1,6 @@
 // veux comes bundled with nuxt js
 import Vuex from "vuex";
+import axios from "axios";
 
 // function to create store
 // need a function to represent the store (coz it should be callable with nuxt to be executed on the server to setup the store)
@@ -16,40 +17,21 @@ const createStore = () => {
       //payload is always context
       //general data has been fetched only one time and added to the store
       nuxtServerInit({ commit }, context) {
-        // if (!process.client) {
-        //   // console.log(context.req);
-        // }
+        //must return as using async request
+        return axios
+          .get("https://nuxt-blog-e3c31.firebaseio.com/post")
+          .then(res => {
+            //transform data object into array before storing (here objects are named with a key)
+            const postArray = []; //initialize array
+            for (const key in res.data) {
+              postArray.push({ ...res.data[key], id: key }); //storing with inidividual key (store the key inside  as id)
+            }
+            console.log(postArray);
 
-        // must need to return if executing async action (else we dont need to return)
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            // commit just the array of objects
-            commit("setPosts", [
-              {
-                id: "1",
-                title: " First Post",
-                previewText: "This is the first post",
-                thumbnail:
-                  "https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-              },
-              {
-                id: "2",
-                title: " Second Post",
-                previewText: "This is the second post",
-                thumbnail:
-                  "https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-              },
-              {
-                id: "3",
-                title: " Third Post",
-                previewText: "This is the third post",
-                thumbnail:
-                  "https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-              }
-            ]);
-            resolve(); // to mark that i am done (different in nuxtServerInit than normal)
-          }, 1000);
-        });
+            //storing inside of vuex
+            commit("setPosts", postArray);
+          }) //store inside of vuex
+          .catch(e => context.error(e));
       },
 
       // commit is inside of vuexContext.commit
