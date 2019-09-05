@@ -31,10 +31,10 @@ export default {
           ".json"
       )
       .then(res => {
-        console.log(res.data);
         //merging with component data (so returning object)
         return {
-          loadedPost: res.data
+          // adding postId to the field(coz folder name is postId)
+          loadedPost: { ...res.data, id: context.params.postId }
         };
       })
       .catch(e => context.error(e));
@@ -43,17 +43,9 @@ export default {
   methods: {
     //edited post is passed on auto in emited submit event
     onSubmitted(editedPost) {
-      //param is postId because folder is named _postId
-      //updating the data // but getting the params from vue router
-      axios
-        .put(
-          "https://nuxt-blog-e3c31.firebaseio.com/post/" +
-            this.$route.params.postId +
-            ".json",
-          editedPost
-        )
-        .then(res => this.$router.push("/admin"))
-        .catch(e => console.log(e));
+      this.$store
+        .dispatch("editPost", editedPost)
+        .then(() => this.$router.push("/admin"));
     }
   }
 };

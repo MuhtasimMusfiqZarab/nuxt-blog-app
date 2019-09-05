@@ -39,6 +39,43 @@ const createStore = () => {
       setPosts({ commit }, posts) {
         //payload of posts is optional
         commit("setPosts", posts);
+      },
+      //doing addPost mutation
+      // implementing async/await
+      async addPost({ commit }, postData) {
+        const createdPost = { ...postData, updatedDate: new Date() };
+        // its better to async call from here)
+        try {
+          //postData object is coming from the form
+          const result = await axios.post(
+            "https://nuxt-blog-e3c31.firebaseio.com/post.json",
+            createdPost
+          );
+          //savig in vuex
+          commit("addPost", { ...createdPost, id: result.data.name }); //name is the id of firebase, res.data is from axios)
+          this.$router.push("/admin"); //redirect (this might not work but worked well)
+        } catch (err) {
+          throw new Error(err);
+        }
+      },
+      //commiting editPost mutation
+      // implemeting promise chaining
+      editPost({ commit }, editedPost) {
+        //param is postId because folder is named _postId
+        //updating the data // but getting the params from vue router
+        //return the promise & waiting it to finish to redirect later
+        return axios //saving in database
+          .put(
+            "https://nuxt-blog-e3c31.firebaseio.com/post/" +
+              editedPost.id +
+              ".json",
+            editedPost
+          )
+          .then(res =>
+            //saving to vuex
+            commit("editPost", editedPost)
+          )
+          .catch(e => console.log(e));
       }
     },
     getters: {
@@ -50,6 +87,19 @@ const createStore = () => {
       //posts is the payload
       setPosts(state, posts) {
         state.loadedPosts = posts;
+      },
+
+      // as nuxtServerInit runs once and then the store is not changed (as we did not write syncData()/fetch() inside the components where the data are added/edited)so we need to add and edit post to vuex after each subsequent changes are made
+      addPost(state, post) {
+        state.loadedPosts.push(post);
+      },
+      editPost(state, editedPost) {
+        //1st find the existed post index in the state array
+        const postIndex = state.loadedPosts.findIndex(
+          post => post.id === editedPost.id
+        );
+        // replacing the element with the new element
+        state.loadedPosts[postIndex] = editedPost;
       }
     }
   });

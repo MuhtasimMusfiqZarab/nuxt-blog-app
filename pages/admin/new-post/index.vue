@@ -21,19 +21,9 @@ export default {
   },
   methods: {
     // must use try catch block inside of async,await
-    async onSubmitted(postData) {
-      try {
-        //(url, data object)
-        //postData object is coming from the form
-        const result = await axios.post(
-          "https://nuxt-blog-e3c31.firebaseio.com/post.json",
-          { ...postData, updatedDate: new Date() }
-        );
-        // console.log(result);
-        this.$router.push("/admin");
-      } catch (err) {
-        throw new Error(err);
-      }
+    onSubmitted(postData) {
+      //need to call coz nuxtInitServer executes only once (thus need to change vuex data later like this one)
+      this.$store.dispatch("addPost", postData);
     }
   }
 };

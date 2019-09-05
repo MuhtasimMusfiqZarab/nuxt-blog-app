@@ -50,6 +50,8 @@ export default {
   box-shadow: 3px 3px 3px black;
   box-sizing: border-box;
   border: 1px solid black;
+  text-align: center;
+  text-transform: capitalize;
 }
 
 @media (min-width: 768px) {
