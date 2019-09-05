@@ -29,7 +29,8 @@ export default {
           "https://nuxt-blog-e3c31.firebaseio.com/post.json",
           { ...postData, updatedDate: new Date() }
         );
-        console.log(result);
+        // console.log(result);
+        this.$router.push("/admin");
       } catch (err) {
         throw new Error(err);
       }

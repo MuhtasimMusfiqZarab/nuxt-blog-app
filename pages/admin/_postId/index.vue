@@ -41,9 +41,19 @@ export default {
     //id is fetched from route params (context.params.id === route.params.id)
   },
   methods: {
+    //edited post is passed on auto in emited submit event
     onSubmitted(editedPost) {
-      //updating the data
-      // axios.put()
+      //param is postId because folder is named _postId
+      //updating the data // but getting the params from vue router
+      axios
+        .put(
+          "https://nuxt-blog-e3c31.firebaseio.com/post/" +
+            this.$route.params.postId +
+            ".json",
+          editedPost
+        )
+        .then(res => this.$router.push("/admin"))
+        .catch(e => console.log(e));
     }
   }
 };
