@@ -17,6 +17,7 @@ const createStore = () => {
       //payload is always context
       //general data has been fetched only one time and added to the store
       nuxtServerInit({ commit }, context) {
+        //fetching data & initializing the store with it
         //must return as using async request
         return axios
           .get("https://nuxt-blog-e3c31.firebaseio.com/post.json")

@@ -24,9 +24,10 @@ export default {
     async onSubmitted(postData) {
       try {
         //(url, data object)
+        //postData object is coming from the form
         const result = await axios.post(
           "https://nuxt-blog-e3c31.firebaseio.com/post.json",
-          postData
+          { ...postData, updatedDate: new Date() }
         );
         console.log(result);
       } catch (err) {

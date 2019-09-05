@@ -22,38 +22,24 @@
 
 
 <script>
+import axios from "axios";
 export default {
-  // inside of async ==> we get this.$route.params(params object holds all route parameters) by using context.params (or context.route.params)
-  // we also know that this keyword can't be used here
-  // for individual data we still always perform async because it might need some extra data
-  // we can only use asyncData() inside of a paged component
-  //async data will be executed on the server wehn we load it the first time or on client on subsiquent navigation & action
-  // this is powerfull for page specific data
-
-  //---------fetch vs asyncData
-  //* async merge the data in data property, fetch stores the data on the store (using commit inside it)
-  // better option than fetch is to use nuxtServerInit()
-
-  // ----------------This one uses promise (example code)
-  // code can be found here: https://codesandbox.io/s/kind-dubinsky-y57g1
-
-  //--------------Later version----------------------
-  asyncData(context, callback) {
-    //data must wait till it finish loading on the server before it is send to client (thus must use callback or promise)
-    setTimeout(() => {
-      callback(null, {
-        loadedPost: {
-          id: "1",
-          title: " First Post (id " + context.params.id + ")",
-          previewText: "This is the first post",
-          author: "Muhtasim Musfiq",
-          updatedDate: new Date(),
-          content: "Dummy text, not the preview text",
-          thumbnail:
-            "https://images.pexels.com/photos/1509428/pexels-photo-1509428.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-        }
-      });
-    }, 1000);
+  asyncData(context) {
+    //callback is not needed as we are using promise
+    return axios
+      .get(
+        "https://nuxt-blog-e3c31.firebaseio.com/post/" +
+          context.params.id +
+          ".json"
+      )
+      .then(res => {
+        //merging with component data (loadedData)
+        return {
+          loadedPost: res.data
+        };
+      })
+      .catch(e => context.error(e));
+    //id is fetched from route params (context.params.id === route.params.id)
   }
 };
 </script>
