@@ -19,6 +19,7 @@ export default {
   components: {
     AdminPostForm
   },
+  middleware: "auth",
   // fetch post into the form
   asyncData(context) {
     //callback is not needed as we are using promise

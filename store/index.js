@@ -102,6 +102,10 @@ const createStore = () => {
     getters: {
       loadedPosts(state) {
         return state.loadedPosts;
+      },
+      //checking authentication
+      isAuthenticated(state) {
+        return state.token != null;
       }
     },
     mutations: {

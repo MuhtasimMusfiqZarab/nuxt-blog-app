@@ -15,6 +15,7 @@
 <script>
 export default {
   layout: "admin",
+  middleware: "auth",
   computed: {
     //getting prefetched data from vuex
     loadedPosts() {
