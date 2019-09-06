@@ -26,9 +26,7 @@ export default {
     return axios
       .get(
         //param is postId because folder is named _postId
-        "https://nuxt-blog-e3c31.firebaseio.com/post/" +
-          context.params.postId +
-          ".json"
+        process.env.baseURL + "/post/" + context.params.postId + ".json"
       )
       .then(res => {
         //merging with component data (so returning object)

@@ -48,7 +48,7 @@ const createStore = () => {
         try {
           //postData object is coming from the form
           const result = await axios.post(
-            "https://nuxt-blog-e3c31.firebaseio.com/post.json",
+            process.env.baseURL + "/post.json",
             createdPost
           );
           //savig in vuex
@@ -66,9 +66,7 @@ const createStore = () => {
         //return the promise & waiting it to finish to redirect later
         return axios //saving in database
           .put(
-            "https://nuxt-blog-e3c31.firebaseio.com/post/" +
-              editedPost.id +
-              ".json",
+            process.env.baseURL + "/post/" + editedPost.id + ".json",
             editedPost
           )
           .then(res =>

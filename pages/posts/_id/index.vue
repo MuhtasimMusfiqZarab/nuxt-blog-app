@@ -41,6 +41,10 @@ export default {
       })
       .catch(e => context.error(e));
     //id is fetched from route params (context.params.id === route.params.id)
+  },
+  //overwriting configurtion
+  head: {
+    title: "A Blog Post"
   }
 };
 </script>
