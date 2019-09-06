@@ -5,13 +5,7 @@
 </template>
 
 <script>
-import PostList from "@/components/Posts/PostList";
-
 export default {
-  components: {
-    PostList
-  },
-
   //loading async data from the store to be used
   computed: {
     // this.$store.dispatch("setPosts", this.loadedPosts);

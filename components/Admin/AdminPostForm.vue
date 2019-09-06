@@ -20,16 +20,8 @@
 </template>
 
 <script>
-// importing the custom ui components
-import AppControlInput from "@/components/UI/AppControlInput";
-import AppButton from "@/components/UI/AppButton";
-
 export default {
   name: "AdminPostForm",
-  components: {
-    AppControlInput,
-    AppButton
-  },
   props: {
     //getting default value for the form if passed as a prop (prop is whole data object)
     post: {
