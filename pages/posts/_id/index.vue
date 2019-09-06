@@ -22,21 +22,18 @@
 
 
 <script>
-import axios from "axios";
 export default {
   asyncData(context) {
     //callback is not needed as we are using promise
-    return axios
-      .get(
+    return context.app.$axios
+      .$get(
         //context.params.id because the folder is named _id
-        "https://nuxt-blog-e3c31.firebaseio.com/post/" +
-          context.params.id +
-          ".json"
+        "/post/" + context.params.id + ".json"
       )
-      .then(res => {
+      .then(data => {
         //merging with component data (loadedData)
         return {
-          loadedPost: res.data
+          loadedPost: data
         };
       })
       .catch(e => context.error(e));

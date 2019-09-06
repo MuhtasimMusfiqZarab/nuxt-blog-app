@@ -57,9 +57,15 @@ export default {
    */
   buildModules: [],
   /*
-   ** Nuxt.js modules
+   ** Nuxt.js modules (lets us add convinient features in nuxt
+   ** we use 3rd party modules, dont create our own coz its complex)
    */
-  modules: [],
+  modules: ["@nuxtjs/axios"], //is doesn't replace our default axios inport in our app
+  //now we can write axios config after writting inside of the module
+  axios: {
+    baseURL: process.env.BASE_URL || "https://nuxt-blog-e3c31.firebaseio.com",
+    credentials: false //not try to pass any cookies to the backend as we are having a restful api
+  },
   /*
    ** Build configuration
    */
@@ -71,6 +77,7 @@ export default {
   },
   //################### OTHER SETTINGS APPLIED BY ME
   // dev: true // development mode or not
+  //we can aceess this url from anywhere of the file using process.env.baseURL
   env: {
     //my environment variable injected into the project
     //process.env.BASE_URL  will be taken from real node server

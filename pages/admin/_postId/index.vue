@@ -15,7 +15,6 @@
 <script>
 // using from With default value inside to update that (load post into the form inside data property)
 import AdminPostForm from "@/components/Admin/AdminPostForm";
-import axios from "axios";
 export default {
   components: {
     AdminPostForm
@@ -23,16 +22,16 @@ export default {
   // fetch post into the form
   asyncData(context) {
     //callback is not needed as we are using promise
-    return axios
-      .get(
+    return context.app.$axios
+      .$get(
         //param is postId because folder is named _postId
-        process.env.baseURL + "/post/" + context.params.postId + ".json"
+        "/post/" + context.params.postId + ".json"
       )
-      .then(res => {
+      .then(data => {
         //merging with component data (so returning object)
         return {
           // adding postId to the field(coz folder name is postId)
-          loadedPost: { ...res.data, id: context.params.postId }
+          loadedPost: { ...data, id: context.params.postId }
         };
       })
       .catch(e => context.error(e));

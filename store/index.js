@@ -1,7 +1,5 @@
 // veux comes bundled with nuxt js
 import Vuex from "vuex";
-import axios from "axios";
-
 // function to create store
 // need a function to represent the store (coz it should be callable with nuxt to be executed on the server to setup the store)
 const createStore = () => {
@@ -19,15 +17,17 @@ const createStore = () => {
       nuxtServerInit({ commit }, context) {
         //fetching data & initializing the store with it
         //must return as using async request
-        return axios
-          .get("https://nuxt-blog-e3c31.firebaseio.com/post.json")
-          .then(res => {
+        // we can access injected axios module from anywhere using ( this.$axios) but only here we use (context.app.$axios)
+        return context.app.$axios //baseUrl is set inside this module
+          .$get("/post.json")
+          .then(data => {
+            //axios module directly gives us data from res obj
             //transform data object into array before storing (here objects are named with a key)
             const postArray = []; //initialize array
-            for (const key in res.data) {
-              postArray.push({ ...res.data[key], id: key }); //storing with inidividual key (store the key inside  as id)
+            for (const key in data) {
+              postArray.push({ ...data[key], id: key }); //storing with inidividual key (store the key inside  as id)
             }
-            console.log(postArray);
+            // console.log(postArray);
 
             //storing inside of vuex
             commit("setPosts", postArray);
@@ -47,12 +47,9 @@ const createStore = () => {
         // its better to async call from here)
         try {
           //postData object is coming from the form
-          const result = await axios.post(
-            process.env.baseURL + "/post.json",
-            createdPost
-          );
+          const data = await this.$axios.$post("/post.json", createdPost);
           //savig in vuex
-          commit("addPost", { ...createdPost, id: result.data.name }); //name is the id of firebase, res.data is from axios)
+          commit("addPost", { ...createdPost, id: data.name }); //name is the id of firebase, res.data is from axios)
           this.$router.push("/admin"); //redirect (this might not work but worked well)
         } catch (err) {
           throw new Error(err);
@@ -64,11 +61,8 @@ const createStore = () => {
         //param is postId because folder is named _postId
         //updating the data // but getting the params from vue router
         //return the promise & waiting it to finish to redirect later
-        return axios //saving in database
-          .put(
-            process.env.baseURL + "/post/" + editedPost.id + ".json",
-            editedPost
-          )
+        return this.$axios //saving in database
+          .$put("/post/" + editedPost.id + ".json", editedPost)
           .then(res =>
             //saving to vuex
             commit("editPost", editedPost)
