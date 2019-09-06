@@ -73,7 +73,7 @@ const createStore = () => {
           )
           .catch(e => console.log(e));
       },
-      authenticateUser({ commit }, authData) {
+      authenticateUser({ commit, dispatch }, authData) {
         //initially this is loginURL
         let authURL =
           "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" +
@@ -95,8 +95,18 @@ const createStore = () => {
             password: authData.password,
             returnSecureToken: true
           })
-          .then(result => commit("setToken", result.idToken))
+          .then(result => {
+            commit("setToken", result.idToken);
+            //dispatch the action when setting up the token
+            dispatch("setLogoutTimer", result.expiresIn * 1000);
+          })
           .catch(e => console.log(e));
+      },
+      //clearing the token after an hour coz it wont work after that
+      setLogoutTimer({ commit }, duration) {
+        setTimeout(() => {
+          commit("clearToken");
+        }, duration);
       }
     },
     getters: {
@@ -128,6 +138,10 @@ const createStore = () => {
       },
       setToken(state, token) {
         state.token = token;
+      },
+      // clear token as it would not work after an hour
+      clearToken(state) {
+        state.token = null;
       }
     }
   });
