@@ -58,12 +58,15 @@ const createStore = () => {
       },
       //commiting editPost mutation
       // implemeting promise chaining
-      editPost({ commit }, editedPost) {
+      editPost({ commit, state }, editedPost) {
         //param is postId because folder is named _postId
         //updating the data // but getting the params from vue router
         //return the promise & waiting it to finish to redirect later
         return this.$axios //saving in database
-          .$put("/post/" + editedPost.id + ".json", editedPost)
+          .$put(
+            "/post/" + editedPost.id + ".json?auth=" + state.token,
+            editedPost
+          )
           .then(res =>
             //saving to vuex
             commit("editPost", editedPost)
