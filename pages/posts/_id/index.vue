@@ -3,7 +3,7 @@
     <section class="post">
       <h1 class="post-title">{{loadedPost.title}}</h1>
       <div class="post-details">
-        <div class="post-detail">{{loadedPost.updatedDate}}</div>
+        <div class="post-detail">{{loadedPost.updatedDate | date }}</div>
         <div class="post-detail">{{loadedPost.author}}</div>
       </div>
       <div class="post-content">{{loadedPost.content}}</div>
@@ -83,7 +83,7 @@ export default {
 
 @media (min-width: 768px) {
   .post-details {
-    flex-direction: row;
+    flex-direction: column;
   }
 }
 
