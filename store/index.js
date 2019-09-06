@@ -7,7 +7,8 @@ const createStore = () => {
   return new Vuex.Store({
     // initial
     state: {
-      loadedPosts: []
+      loadedPosts: [],
+      token: null
     },
     actions: {
       //special action to run it once in the server
@@ -68,6 +69,31 @@ const createStore = () => {
             commit("editPost", editedPost)
           )
           .catch(e => console.log(e));
+      },
+      authenticateUser({ commit }, authData) {
+        //initially this is loginURL
+        let authURL =
+          "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" +
+          process.env.fbAPIKey;
+
+        //if it is a signup
+        if (!authData.isLogin) {
+          //change the url to signUp url
+          authURL =
+            "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" +
+            process.env.fbAPIKey;
+        }
+        //we would send http req after the form submission
+        //sending data with the 2nd object arg (see the firebase auth api)
+        //returning this to redirect from auth page
+        return this.$axios
+          .$post(authURL, {
+            email: authData.email,
+            password: authData.password,
+            returnSecureToken: true
+          })
+          .then(result => commit("setToken", result.idToken))
+          .catch(e => console.log(e));
       }
     },
     getters: {
@@ -92,6 +118,9 @@ const createStore = () => {
         );
         // replacing the element with the new element
         state.loadedPosts[postIndex] = editedPost;
+      },
+      setToken(state, token) {
+        state.token = token;
       }
     }
   });

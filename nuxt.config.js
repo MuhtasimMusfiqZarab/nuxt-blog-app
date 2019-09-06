@@ -81,14 +81,17 @@ export default {
   env: {
     //my environment variable injected into the project
     //process.env.BASE_URL  will be taken from real node server
-    baseURL: process.env.BASE_URL || "https://nuxt-blog-e3c31.firebaseio.com"
+    baseURL: process.env.BASE_URL || "https://nuxt-blog-e3c31.firebaseio.com",
+    fbAPIKey: "AIzaSyBgPy3XUNBRq-7BZvGCnXHUMsogEXuqMds"
   },
   generate: {
     // to change the way nuxt statically generates pages
   },
   // rootDir: "/my-app/" //to make my-app folder as the root directory
   // overwrite the setting of nuxt router
+  // can add middleware in all of the routes
   router: {
+    // middleware: "log",
     // base: "/my-app/" // the root folder to serve
     extendRoutes(routes, resolve) {
       //allows us to programmetically add our own route

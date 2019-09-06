@@ -6,6 +6,8 @@
 
 <script>
 export default {
+  //middleware expects file names except for the extention
+  middleware: "log",
   //loading async data from the store to be used
   computed: {
     // this.$store.dispatch("setPosts", this.loadedPosts);
