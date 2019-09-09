@@ -114,6 +114,12 @@ const createStore = () => {
               "expirationDate",
               new Date().getTime() + Number.parseInt(result.expiresIn) * 1000
             );
+
+            //send another request to our cusmon api after this is finished
+            // thus returning a new call here
+            this.$axios.$post("http://localhost:3000/api/track-data", {
+              data: "Authenticated by my custom API"
+            });
           })
           .catch(e => console.log(e));
       },

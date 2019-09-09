@@ -1,4 +1,6 @@
 // this is used whenever we run => npm run dev /build command for deployment
+//Here we need to require import (coz this would we executed by node )
+const bodyParser = require("body-parser");
 
 //universal means we are taking advantage of nuxt's pre-render capabilities (run views on the server already)
 export default {
@@ -107,5 +109,14 @@ export default {
   transition: {
     name: "fade", //used from inside of global css
     mode: "out-in"
-  }
+  },
+
+  // this is node & express compatible middleware that will be executed prior to the nuxt rendering process
+  //here we can register any express middleware  that we want to run first (includiing our own one)
+  // this would be ecexuted from top to bottom
+  serverMiddleware: [
+    //to parse incoming jason body and add them to the body field on the incoming request object
+    bodyParser.json(),
+    "~/api"
+  ]
 };
