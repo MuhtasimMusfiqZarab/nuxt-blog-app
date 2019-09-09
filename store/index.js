@@ -12,6 +12,7 @@ const createStore = () => {
       loadedPosts: [],
       token: null
     },
+    //=======================ACTIONS===========================
     actions: {
       //special action to run it once in the server
       // this action will auto dispatched be nuxt
@@ -45,12 +46,16 @@ const createStore = () => {
       },
       //doing addPost mutation
       // implementing async/await
-      async addPost({ commit }, postData) {
+      async addPost({ commit, state }, postData) {
+        //destrucring from vuexContent
         const createdPost = { ...postData, updatedDate: new Date() };
         // its better to async call from here)
         try {
           //postData object is coming from the form
-          const data = await this.$axios.$post("/post.json", createdPost);
+          const data = await this.$axios.$post(
+            "/post.json?auth=" + state.token,
+            createdPost
+          );
           //savig in vuex
           commit("addPost", { ...createdPost, id: data.name }); //name is the id of firebase, res.data is from axios)
           this.$router.push("/admin"); //redirect (this might not work but worked well)
@@ -135,7 +140,7 @@ const createStore = () => {
           if (!req.headers.cookie) {
             return; //notthing to do
           }
-          //===================TOKEN EXTRACTION==================
+          //---------------------TOKEN EXTRACTION---------------------
           const jwtCookie = req.headers.cookie
             .split(";")
             .find(c => c.trim().startsWith("jwt=")); //spliting by semicolon
@@ -146,7 +151,7 @@ const createStore = () => {
           }
           //value found
           token = jwtCookie.split("=")[1]; // spliting on = and get the 2nd array value
-          //===================EXPIRATION DATE EXTRACTION===========
+          //----------------EXPIRATION DATE EXTRACTION--------------
           expirationDate = req.headers.cookie
             .split(";")
             .find(c => c.trim().startsWith("expirationDate="))
@@ -181,6 +186,7 @@ const createStore = () => {
         }
       }
     },
+    //=======================GETTERS===========================
     getters: {
       loadedPosts(state) {
         return state.loadedPosts;
@@ -190,6 +196,7 @@ const createStore = () => {
         return state.token != null;
       }
     },
+    //==============MUTATIONS=================================
     mutations: {
       //posts is the payload
       setPosts(state, posts) {
