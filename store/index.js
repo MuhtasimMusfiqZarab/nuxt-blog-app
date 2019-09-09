@@ -96,7 +96,15 @@ const createStore = () => {
             returnSecureToken: true
           })
           .then(result => {
+            //saving token to store
             commit("setToken", result.idToken);
+            //saving token to localstorage
+            localStorage.setItem("token", result.idToken);
+            //new date().getTime gives current time in milisecond
+            localStorage.setItem(
+              "tokenExpiration",
+              new Date().getTime() + result.expiresIn * 1000
+            );
             //dispatch the action when setting up the token
             dispatch("setLogoutTimer", result.expiresIn * 1000);
           })
@@ -107,6 +115,25 @@ const createStore = () => {
         setTimeout(() => {
           commit("clearToken");
         }, duration);
+      },
+      // checking saved token inside local storage
+      initAuth(vuexContext) {
+        const token = localStorage.getItem("token");
+        const expirationDate = localStorage.getItem("tokenExpiration");
+
+        if (new Date().getTime() > +expirationDate || !token) {
+          //+ string to a number
+          // that means that this is expired or dont have the token
+          return;
+        }
+
+        //need to set the logout timer too
+        vuexContext.commit(
+          "setLogoutTimer",
+          +expirationDate - new Date().getTime() //+ for turning string into a number
+        );
+        //saving from storge to vuex
+        vuexContext.commit("setToken", token);
       }
     },
     getters: {

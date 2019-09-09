@@ -15,7 +15,7 @@
 <script>
 export default {
   layout: "admin",
-  middleware: "auth",
+  middleware: ["check-auth", "auth"], // order is important for execution
   computed: {
     //getting prefetched data from vuex
     loadedPosts() {
