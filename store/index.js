@@ -1,5 +1,7 @@
 // veux comes bundled with nuxt js
 import Vuex from "vuex";
+// using cookie to send data to server in each page reload
+import Cookie from "js-cookie";
 // function to create store
 // need a function to represent the store (coz it should be callable with nuxt to be executed on the server to setup the store)
 const createStore = () => {
@@ -105,6 +107,13 @@ const createStore = () => {
               "tokenExpiration",
               new Date().getTime() + result.expiresIn * 1000
             );
+            //also save the token inside cookie to send token to be used by the server
+            //cookies are send inside http request (to the server) in each page refresh
+            Cookie.set("jwt", result.idToken);
+            Cookie.set(
+              "expirationDate",
+              new Date().getTime() + result.expiresIn * 1000
+            );
             //dispatch the action when setting up the token
             dispatch("setLogoutTimer", result.expiresIn * 1000);
           })
@@ -117,18 +126,46 @@ const createStore = () => {
         }, duration);
       },
       // checking saved token inside local storage
-      initAuth(vuexContext) {
-        const token = localStorage.getItem("token");
-        const expirationDate = localStorage.getItem("tokenExpiration");
+      initAuth(vuexContext, req) {
+        let token;
+        let expirationDate;
+        //if request is comming in then this action is dispatched on the server
+        //check if this action is dispatched on the server (then get token value from cookie)
+        //else if on client , get the value from localstorage
+        if (req) {
+          //checking if cookie is available or not
+          if (!req.headers.cookie) {
+            return; //notthing to do
+          }
+          //===================TOKEN EXTRACTION==================
+          const jwtCookie = req.headers.cookie
+            .split(";")
+            .find(c => c.trim().startsWith("jwt=")); //spliting by semicolon
 
-        if (new Date().getTime() > +expirationDate || !token) {
-          //+ string to a number
-          // that means that this is expired or dont have the token
-          return;
+          //could not find jwt cookie
+          if (!jwtCookie) {
+            return;
+          }
+          //value found
+          token = jwtCookie.split("=")[1]; // spliting on = and get the 2nd array value
+          //===================EXPIRATION DATE EXTRACTION===========
+          expirationDate = req.headers.cookie
+            .split(";")
+            .find(c => c.trim().startsWith("expirationDate="))
+            .split("=")[1]; //spliting by semicolon
+        } else {
+          token = localStorage.getItem("token");
+          expirationDate = localStorage.getItem("tokenExpiration");
+
+          if (new Date().getTime() > +expirationDate || !token) {
+            //+ string to a number
+            // that means that this is expired or dont have the token
+            return;
+          }
         }
 
         //need to set the logout timer too
-        vuexContext.commit(
+        vuexContext.dispatch(
           "setLogoutTimer",
           +expirationDate - new Date().getTime() //+ for turning string into a number
         );
