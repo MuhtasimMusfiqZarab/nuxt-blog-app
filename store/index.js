@@ -151,9 +151,13 @@ const createStore = () => {
             .split(";")
             .find(c => c.trim().startsWith("expirationDate="))
             .split("=")[1]; //spliting by semicolon
-        } else {
+        } else if (process.client) {
+          //if we are on clien
           token = localStorage.getItem("token");
           expirationDate = localStorage.getItem("tokenExpiration");
+        } else {
+          token = null;
+          expirationDate = null;
         }
         if (new Date().getTime() > +expirationDate || !token) {
           // that means that this is expired or dont have the token

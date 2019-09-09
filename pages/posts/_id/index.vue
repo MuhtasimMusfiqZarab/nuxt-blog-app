@@ -24,6 +24,14 @@
 <script>
 export default {
   asyncData(context) {
+    //checking from generate property inside of nuxt config (static generation command)
+    if (context.paload) {
+      //for only generating static pages this if block will run
+      //then return different data to be merged with our data of the component (no need to make new http request)
+      return {
+        loadedPost: context.payload.postData
+      };
+    }
     //callback is not needed as we are using promise
     return context.app.$axios
       .$get(

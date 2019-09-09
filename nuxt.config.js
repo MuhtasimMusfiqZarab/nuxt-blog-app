@@ -1,6 +1,8 @@
 // this is used whenever we run => npm run dev /build command for deployment
 //Here we need to require import (coz this would we executed by node )
 const bodyParser = require("body-parser");
+//imported for generating pre generated dynamic routes (only for static apps)
+const axios = require("axios");
 
 //universal means we are taking advantage of nuxt's pre-render capabilities (run views on the server already)
 export default {
@@ -118,5 +120,28 @@ export default {
     //to parse incoming jason body and add them to the body field on the incoming request object
     bodyParser.json(),
     "~/api"
-  ]
+  ],
+  //this is important for generating static page application (generate is neede only for static page application)
+  generate: {
+    // important is here is route config (routes sinply takes a function)
+    // this function returns a array of routes that should be prerendered
+    routes: function() {
+      //returning promisce
+      return axios
+        .get("https://nuxt-blog-e3c31.firebaseio.com/post.json")
+        .then(res => {
+          const routes = []; // we will store the objects here in the array
+          //firebase always returns an object (we need to push each object in the array)(key is each object in the array of objs)
+          // here we are generating array of routes with all the keys of the posts
+          for (const key in res.data) {
+            routes.push({
+              route: "/post/" + key,
+              payload: { postData: res.data[key] }
+            });
+          }
+          //we always need to return the routes (array)
+          return routes;
+        });
+    }
+  }
 };
